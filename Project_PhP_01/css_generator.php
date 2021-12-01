@@ -1,15 +1,51 @@
 <?php
-
+Get_global_width_height($argc,$argv);
 Fusion_image($argc,$argv);
+$global_width =0 ;
+$global_height =0 ;
 
 
+function Get_global_width_height($argc,$argv){
+    
+    global $global_width;
+    global $global_height;
+    
+    
+    // boucle
+    for ($i=1; $i <=$argc-1 ; $i++) { 
+        
+        
+        
+        $Size_png_global= getimagesize($argv[$i]);
+        
+        if ($global_height<$Size_png_global[1]) { // if the height of png png is the most big then we save it
+            
+            $global_height = $Size_png_global[1];
+            
+        }
+        
+        $global_width+=$Size_png_global[0];
+        
+        
+        
+        
+    }
+    
+    
+    
+}
 
 
 
 function Fusion_image($argc,$argv){
     
+    global $global_width;
+    global $global_height;
     
-    $Fusion_png=imagecreatetruecolor(5000,2000);
+    
+    
+    
+    $Fusion_png=imagecreatetruecolor($global_width,$global_height);
     
     // Image numero 1
     $PNG_zero= imagecreatefrompng($argv[1]);
@@ -39,12 +75,6 @@ function Fusion_image($argc,$argv){
         
         if ($i==2) {
             
-            if ($Size_png_zero[1]>$Size_png[1]) {  // if the height of png zero is the most big then we save it
-
-                $Size_png_final = $Size_png_zero[1];
-                
-            }
-            
             imagecopy( $Fusion_png,$PNG, $Size_png_zero[0], 0, 0, 0, $Size_png[0], $Size_png[1]);
             
             imagepng($Fusion_png,"Fusion.png");
@@ -57,13 +87,6 @@ function Fusion_image($argc,$argv){
             
         }
         elseif ($i!=2) {
-
-            if ($Size_png_final<$Size_png[1]) { // if the height of png png is the most big then we save it
-
-                $Size_png_final = $Size_png[1];
-                
-            }
-            
             
             
             imagecopy( $Fusion_png,$PNG, $Size_All, 0, 0, 0, $Size_png[0], $Size_png[1]);
@@ -71,22 +94,15 @@ function Fusion_image($argc,$argv){
             imagepng($Fusion_png,"Fusion.png");
             
             imagedestroy($PNG);
-
+            
             $Size_All += $Size_png[0]; // add the larger of the new pics 
-
+            
             
         }
         
     }
-
-    // final png with perfect size
-    $Fusion_png_final=imagecreatetruecolor($Size_All,$Size_png_final);
-
-    $PNG_final= imagecreatefrompng("Fusion.png");
-
-    imagecopy( $Fusion_png_final,$PNG_final, 0, 0, 0, 0, $Size_All, $Size_png_final);
-            
-    imagepng($Fusion_png_final,"Fusion_final.png");
+    
+    
 }
 
 
