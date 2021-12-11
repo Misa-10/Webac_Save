@@ -1,0 +1,6 @@
+.img-1, .img-2, .img-4
+{  background: url('test.png') no-repeat;   text-align: left; }
+ 
+.img-1 { background-position: -0px -0px; width: 800px; height: 800px; }
+.img-2 { background-position: -0px -800px; width: 640px; height: 480px; }
+.img-4 { background-position: -0px -1280px; width: 640px; height: 640px; }
